@@ -1,0 +1,202 @@
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.app-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.controls-section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #555;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.control-button {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+  min-width: 40px;
+  text-align: center;
+  user-select: none;
+}
+
+.control-button:hover {
+  background-color: #e8e8e8;
+}
+
+.control-button.active {
+  background-color: #4285f4;
+  color: white;
+  border-color: #3367d6;
+}
+
+.instrument-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.instrument-selector label {
+  font-weight: bold;
+  color: #555;
+}
+
+.instrument-selector select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  flex: 1;
+}
+
+.octave-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.octave-control span {
+  font-weight: bold;
+  color: #555;
+}
+
+.octave-button {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  user-select: none;
+}
+
+.octave-button:hover {
+  background-color: #e8e8e8;
+}
+
+.chord-display {
+  background-color: #e8f5e9;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#chord-name {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0;
+  color: #2e7d32;
+}
+
+#chord-notes {
+  margin-top: 5px;
+  color: #388e3c;
+  font-size: 0.9rem;
+}
+
+.piano-container {
+  overflow-x: auto;
+  background: #333;
+  border-radius: 8px;
+  padding: 20px 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  height: 220px;
+}
+
+.piano-keyboard {
+  display: block;
+  height: 180px;
+  min-width: 1320px; /* 88鍵盤用 */
+  position: relative;
+  margin: 0 auto;
+}
+
+.white-key.active {
+  background: #b3ceff !important;
+}
+
+.black-key.active {
+  background: #4285f4 !important;
+}
+
+.key-label {
+  color: #333;
+}
+
+.black-key .key-label {
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .button-group {
+    gap: 5px;
+  }
+  
+  .control-button {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    min-width: 35px;
+  }
+  
+  #chord-name {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 10px;
+    margin: 10px;
+  }
+  
+  .button-group {
+    gap: 3px;
+  }
+  
+  .control-button {
+    padding: 5px 8px;
+    font-size: 0.75rem;
+    min-width: 30px;
+  }
+}
