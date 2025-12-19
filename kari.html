@@ -29,7 +29,6 @@
         <h3>調号</h3>
         <div class="button-row">
           <button class="accidental-btn" data-accidental="none">なし</button>
-          <button class="accidental-btn" data-accidental="natural">♮</button>
           <button class="accidental-btn" data-accidental="sharp">♯</button>
           <button class="accidental-btn" data-accidental="flat">♭</button>
         </div>
@@ -95,8 +94,8 @@
 
       <!-- 現在のコード表示 -->
       <div class="current-chord-display">
-        <h2 id="chord-name">C Major</h2>
-        <p id="chord-notes">構成音: C - E - G</p>
+        <h2 id="chord-name">C</h2>
+        <p id="chord-notes">構成音 C4</p>
       </div>
     </div>
 
@@ -106,7 +105,10 @@
     </div>
   </div>
 
-  <script src="https://unpkg.com/soundfont-player@latest/dist/soundfont-player.min.js"></script>
-  <script src="script.js"></script>
+  <!-- Soundfontライブラリ（CDN変更） -->
+  <script src="https://cdn.jsdelivr.net/npm/soundfont-player@latest/dist/soundfont-player.min.js"></script>
+  
+  <!-- メインJSをモジュールとして読み込み ★重要★ -->
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

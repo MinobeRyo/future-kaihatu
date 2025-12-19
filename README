@@ -1,0 +1,250 @@
+#audio.js の制御について
+このファイルは音声管理モジュールで、Web Audio APIを使用した音声制御を担当しています。
+
+ファイルの役割
+主要な機能
+AudioContextの管理 - ブラウザの音声処理エンジンの初期化
+楽器音源の読み込み - Soundfontライブラリを使用した楽器データの取得
+音符の再生 - 指定された音符の演奏
+各関数の制御
+1. initAudio()
+- 目的: AudioContextの初期化
+- 制御フロー: 
+  ① 既存のaudioContextがないか確認
+  ② なければ新規作成（Safari対応含む）
+  ③ 成功/失敗を返す
+- 戻り値: boolean
+
+2. loadInstrument(instrumentName)
+- 目的: 指定楽器の音源読み込み
+- 制御フロー:
+  ① AudioContext初期化済みか確認
+  ② Soundfont経由で楽器データ取得（非同期）
+  ③ グローバル変数instrumentに保存
+- 戻り値 Promise
+
+3. playNote(noteName)
+- 目的 音符の再生
+- 制御フロー:
+  ① instrumentが読み込み済みか確認
+  ② 読み込み済みなら再生実行
+  ③ 未読み込みなら警告表示
+- 戻り値 なし
+
+#chordCalculator.js の制御について
+このファイルはコード計算モジュールで、音楽理論に基づいた和音の構成音を計算します。
+ファイルの役割
+音楽のコード（和音）をルート音・調号・コードタイプ・オクターブから計算し、MIDI番号と音名に変換する。
+主要関数の制御フロー
+calculateChordNotes(root, accidental, type, octave)
+入力パラメータ
+root: ルート音（C, D, E など）
+accidental: 調号（'sharp', 'flat', 'natural'）
+type: コードタイプ（'major', 'minor', 'dim'など）
+octave: オクターブ番号
+制御の流れ
+1. ルート音に調号を適用
+   ├─ sharp → #を付加
+   └─ flat  → bを付加
+
+2. CHORD_INTERVALSからコードタイプの音程を取得
+   └─ 例 major = [0, 4, 7]
+
+3. ルート音のMIDI番号を計算
+   ├─ NOTE_LETTERSから音名のインデックス取得
+   ├─ #/bによる半音調整
+   └─ 公式: 12 × (octave + 1) + rootIndex + adjust
+
+4. 構成音のMIDI番号を計算
+   └─ 各インターバルをベースMIDIに加算
+
+5. 左手・右手に分離
+   ├─ 左手: コード全体
+   └─ 右手: メロディー用（現状はほぼ空）
+
+6. 転回形の適用（左手のみ）
+   ├─ 'first':  第1転回形（最低音を1オクターブ上げ）
+   ├─ 'second': 第2転回形（最低音2つを順に上げ）
+   └─ 'spread': 開離配置（ルート音を1オクターブ追加）
+
+7. MIDI番号→音名変換
+   └─ 公式: octave = floor(MIDI/12) - 1
+
+#config.js - 設定・定数定義モジュール
+役割
+アプリケーション全体で使用される定数を一元管理する設定ファイル
+
+主要な定数
+CONFIG
+鍵盤サイズ: 白鍵/黒鍵の幅・高さ、余白
+MIDI範囲: 21(A0)〜108(C8)
+オクターブ制限: UI選択可能範囲 2〜6
+ハイライト時間: 1000ms
+NOTE_LETTERS
+
+['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+1オクターブ12音の半音階
+インデックスが MIDI % 12 に対応
+WHITE_KEYS / BLACK_KEY_POSITIONS
+WHITE_KEYS: 白鍵7音 ['C', 'D', 'E', 'F', 'G', 'A', 'B']
+BLACK_KEY_POSITIONS: 黒鍵の配置情報（E-F間、B-C間は黒鍵なし）
+CHORD_INTERVALS
+
+{
+  'major': [0, 4, 7],    // 長3度、完全5度
+  'minor': [0, 3, 7],    // 短3度、完全5度
+  '7': [0, 4, 7, 10],    // ドミナント7th
+  // ...
+}
+ルート音からの半音数で構成音を定義
+chordCalculator.jsで使用
+CHORD_TYPE_NAMES
+UI表示用のコード名マッピング
+
+#eventHandlers.js - イベント制御モジュール
+役割
+UI操作を検知し、状態更新→コード演奏を即座に実行
+
+主要関数
+playChord()
+scss
+コピー
+calculateChordNotes() → updateChordDisplay() 
+→ playNote() + highlightKey()
+演奏モード: both（全音）/ left-only（左手のみ）
+setupEventListeners()
+全UIにイベント登録（共通パターン: ボタンactive切替 → 状態更新 → 即座に演奏）
+
+対象	処理
+基礎音/調号/コードタイプ	選択→演奏
+音色選択	非同期ロード→演奏
+オクターブ	±1（範囲制限）→演奏
+ボイシング/演奏モード	切替→演奏
+setInitialActiveButtons()
+初期値設定（C、ナチュラル、コードなし、基本形、両手）
+
+
+#keyboard.js - 鍵盤描画・制御モジュール
+役割
+88鍵ピアノ鍵盤をDOM要素として動的生成し、クリック/ハイライト制御
+
+主要関数
+createPianoKeyboard()
+白鍵52個 + 黒鍵36個を生成（A0〜C8）
+
+createWhiteKeys() / createBlackKeys()
+配置制御:
+
+白鍵: 横幅で等間隔配置、Cにラベル表示
+黒鍵: 白鍵70%位置、E-F/B-C間はスキップ、z-index: 2
+MIDI計算:
+
+MIDI = 24 + (octave - 1) × 12 + noteOffset
+// 白鍵: [0,2,4,5,7,9,11], 黒鍵: {C#:1, D#:3...}
+addKeyEventListeners()
+mousedown: 音再生 + アクティブ化
+mouseup/mouseleave: 非アクティブ化
+highlightKey(noteName)
+コード演奏時に鍵盤を1秒間ハイライト
+
+#main.js - アプリケーション初期化モジュール
+役割
+DOMロード後の初期化シーケンスを制御し、全モジュールを統合起動
+
+初期化フロー
+scss
+コピー
+DOMContentLoaded
+    ↓
+起動プロンプト表示
+    ↓
+ユーザークリック（once）
+    ↓
+initialize()
+    ├→ initAudio() - AudioContext初期化
+    ├→ removeStartPrompt()
+    ├→ loadInstrument() - 非同期楽器ロード
+    │   ↓ (成功時)
+    ├→ createPianoKeyboard() - 鍵盤生成
+    ├→ setupEventListeners() - イベント登録
+    ├→ setInitialActiveButtons() - 初期状態設定
+    └→ updateChordDisplay() - 初期表示更新
+主要処理
+initialize()
+AudioContext起動: ブラウザのオーディオポリシー対応
+楽器ロード: Promise完了を待機
+UI構築: 成功後に全UIコンポーネント初期化
+エラーハンドリング: 失敗時はステータス表示
+特徴
+ワンクリック起動: ブラウザの自動再生制限を回避
+非同期制御: 楽器ロード完了まで待機
+エラー表示: 初期化失敗を視覚的に通知
+
+#state.js - 状態管理モジュール
+役割
+アプリケーション全体の状態を一元管理
+
+状態定義
+javascript
+コピー
+state = {
+  rootNote: 'C',              // 基礎音（C~B）
+  accidental: 'none',         // 調号（sharp/flat/none）
+  chordType: 'none',          // コードタイプ（Major/Minor等）
+  octave: 4,                  // オクターブ（0~8）
+  voicing 'root',            // ボイシング（転回形）
+  instrument: 'acoustic_grand_piano', // 音色
+  playMode: 'both'            // 演奏モード（both/left-only）
+}
+関数
+updateState(key, value)
+状態を安全に更新（無効なキーは警告）
+
+getState(key)
+引数あり: 特定の値を取得
+引数なし: 全状態のコピーを返却
+特徴
+単一データソース: 全モジュールが参照
+イミュータブル取得: getState()はコピーを返す
+
+#uiController.js - UI表示制御モジュール
+役割
+画面表示の更新とステータス管理（ユーザーへの視覚的フィードバック）
+
+主要関数
+updateChordDisplay(chordData)
+コード名と構成音を表示更新
+
+
+// 表示例
+"C♯ Major" + "構成音: C# - E - G#"
+
+// 単音時
+state.chordType === 'none' → "C♯"のみ表示
+
+// 演奏モード
+both → 全構成音
+left-only → 左手パートのみ
+ステータス管理
+関数	用途
+createStatusDisplay()	初期化時にステータスバー生成
+updateStatus(message, type)	メッセージ表示
+typeによる色分け
+
+success: 緑 - 初期化完了
+error: 赤 - エラー通知
+warning: 黄 - 警告
+info: 青 - 通常情報
+起動プロンプト
+関数	処理
+createStartPrompt()	クリック要求メッセージ表示
+removeStartPrompt()	初期化後に削除
+目的: ブラウザの自動再生制限を回避
+
+updateOctaveDisplay()
+現在のオクターブ値を表示更新
+
+特徴
+リアルタイム反映: 状態変更を即座に画面表示
+視覚的フィードバック: 色分けで状態を直感的に伝達
+ユーザーガイド: 起動手順を明示
