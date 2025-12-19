@@ -1,8 +1,10 @@
 // UI更新・表示制御モジュール
-import { CHORD_TYPE_NAMES } from './config.js';
+import { CHORD_TYPE_NAMES, RIGHT_HAND_PATTERNS } from './config.js';  // 【修正】
 import { state } from './state.js';
 
-// コード名表示の更新
+/**
+ * コード名表示の更新
+ */
 export function updateChordDisplay(chordData) {
   let accidentalSymbol = '';
   if (state.accidental === 'sharp') accidentalSymbol = '♯';
@@ -17,18 +19,36 @@ export function updateChordDisplay(chordData) {
   
   document.getElementById('chord-name').textContent = chordName;
   
-  // 構成音の表示
+  // 構成音の表示を左手・右手別に対応
   if (chordData) {
-    const notes = state.playMode === 'left-only' 
-      ? chordData.leftHandNoteNames 
-      : chordData.allNoteNames;
+    let notesDisplay = '';
     
-    document.getElementById('chord-notes').textContent = 
-      `構成音: ${notes.join(' - ')}`;
+    if (state.playMode === 'left-only') {
+      // 左手のみ
+      notesDisplay = `左手: ${chordData.leftHandNoteNames.join(' - ')}`;
+      
+    } else if (state.playMode === 'right-only') {
+      // 右手のみ
+      notesDisplay = `右手: ${chordData.rightHandNoteNames.join(' - ')}`;
+      
+    } else {  // 'both'
+      // 両手
+      const leftNotes = chordData.leftHandNoteNames.length > 0 
+        ? chordData.leftHandNoteNames.join(' - ') 
+        : 'なし';
+      const rightNotes = chordData.rightHandNoteNames.length > 0 
+        ? chordData.rightHandNoteNames.join(' - ') 
+        : 'なし';
+      notesDisplay = `左手: ${leftNotes} | 右手: ${rightNotes}`;
+    }
+    
+    document.getElementById('chord-notes').textContent = `構成音: ${notesDisplay}`;
   }
 }
 
-// ステータス表示の作成
+/**
+ * ステータス表示の作成
+ */
 export function createStatusDisplay() {
   const statusDiv = document.createElement('div');
   statusDiv.id = 'audio-status';
@@ -41,7 +61,9 @@ export function createStatusDisplay() {
   return statusDiv;
 }
 
-// ステータス更新
+/**
+ * ステータス更新
+ */
 export function updateStatus(message, type = 'info') {
   const statusDiv = document.getElementById('audio-status');
   if (statusDiv) {
@@ -63,7 +85,9 @@ export function updateStatus(message, type = 'info') {
   }
 }
 
-// 起動プロンプトの作成
+/**
+ * 起動プロンプトの作成
+ */
 export function createStartPrompt() {
   const startPrompt = document.createElement('div');
   startPrompt.id = 'start-prompt';
@@ -76,7 +100,9 @@ export function createStartPrompt() {
   document.querySelector('.app-container').prepend(startPrompt);
 }
 
-// 起動プロンプトの削除
+/**
+ * 起動プロンプトの削除
+ */
 export function removeStartPrompt() {
   const startPrompt = document.getElementById('start-prompt');
   if (startPrompt) {
@@ -84,7 +110,34 @@ export function removeStartPrompt() {
   }
 }
 
-// オクターブ表示の更新
-export function updateOctaveDisplay() {
-  document.getElementById('current-octave').textContent = state.octave;
+/**
+ * 左手オクターブ表示の更新
+ */
+export function updateOctaveDisplay(octave) {
+  const octaveElement = document.getElementById('left-current-octave');
+  if (octaveElement) {
+    octaveElement.textContent = octave;
+  }
+}
+
+/**
+ * 右手オクターブシフト表示の更新
+ */
+export function updateRightOctaveDisplay(shift) {
+  const shiftElement = document.getElementById('right-octave-shift');
+  if (shiftElement) {
+    shiftElement.textContent = `+${shift}`;
+  }
+}
+
+/**
+ * 【修正】右手パターン名の表示更新
+ */
+export function updateRightPatternDisplay(patternKey) {
+  const patternElement = document.getElementById('right-pattern-name');
+  if (patternElement) {
+    // RIGHT_HAND_PATTERNSから名前を取得
+    const patternName = RIGHT_HAND_PATTERNS[patternKey]?.name || patternKey;
+    patternElement.textContent = patternName;
+  }
 }

@@ -248,3 +248,14 @@ updateOctaveDisplay()
 リアルタイム反映: 状態変更を即座に画面表示
 視覚的フィードバック: 色分けで状態を直感的に伝達
 ユーザーガイド: 起動手順を明示
+
+
+
+js/config.js
+js/state.js
+js/audioManager.js
+js/chordCalculator.js
+js/keyboard.js
+js/uiController.js
+js/eventHandlers.js
+js/main.js
