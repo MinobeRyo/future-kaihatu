@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>コード解説 - ピアノコード学習アプリ</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/compose.css">
+  <link rel="stylesheet" href="css/learn.css">
+</head>
+<body>
+  
+  <!-- ページナビゲーション -->
+  <nav class="main-navigation">
+    <a href="main.html" class="nav-link">
+      <span class="icon">🎹</span>
+      練習モード
+    </a>
+    <a href="compose.html" class="nav-link">
+      <span class="icon">🎼</span>
+      作曲モード
+    </a>
+    <a href="learn.html" class="nav-link active">
+      <span class="icon">📖</span>
+      コード解説
+    </a>
+    <a href="魔法陣.html" class="nav-link">
+      <span class="icon">🔮</span>
+      魔法陣
+    </a>
+  </nav>
+
+  <div class="learn-container">
+    
+    <!-- ========== 根音選択 ========== -->
+    <section class="root-selector">
+      <h2>🎵 根音を選択</h2>
+      <div class="root-buttons">
+        <button class="root-btn active" data-root="C">C</button>
+        <button class="root-btn" data-root="D">D</button>
+        <button class="root-btn" data-root="E">E</button>
+        <button class="root-btn" data-root="F">F</button>
+        <button class="root-btn" data-root="G">G</button>
+        <button class="root-btn" data-root="A">A</button>
+        <button class="root-btn" data-root="B">B</button>
+      </div>
+    </section>
+
+    <!-- ========== 単音セクション ========== -->
+    <section class="sound-section single-note-section">
+      <div class="section-header">
+        <h2>🎵 単音 <span id="single-note-name" class="note-display">C</span></h2>
+        <button id="play-single" class="play-btn">
+          <span class="play-icon">▶️</span>
+          再生
+        </button>
+      </div>
+      
+      <div class="keyboard-container">
+        <div id="single-keyboard" class="mini-keyboard"></div>
+      </div>
+      
+      <div class="nuance-box">
+        <h3>💭 音のニュアンス</h3>
+        <p id="single-nuance" class="nuance-text">
+          Cは「ド」の音。明るく安定した響きで、多くの曲の基準となる音です。
+          白鍵の中央に位置し、ピアノを始める時に最初に覚える音でもあります。
+        </p>
+      </div>
+    </section>
+
+    <!-- ========== メジャーコードセクション ========== -->
+    <section class="sound-section chord-section">
+      <div class="section-header">
+        <h2>🎹 メジャーコード <span id="major-chord-name" class="chord-display">C</span></h2>
+        <button id="play-major" class="play-btn">
+          <span class="play-icon">▶️</span>
+          再生
+        </button>
+      </div>
+      
+      <div class="chord-info">
+        <span class="chord-formula">構成音: <span id="major-notes">C - E - G</span></span>
+      </div>
+      
+      <div class="keyboard-container">
+        <div id="major-keyboard" class="mini-keyboard"></div>
+      </div>
+      
+      <div class="nuance-box">
+        <h3>💭 コードのニュアンス</h3>
+        <p id="major-nuance" class="nuance-text">
+          Cメジャーは最も基本的なコード。明るく開放的な響きで、
+          「始まり」「希望」「純粋さ」を感じさせます。
+          多くのポップスやロックの定番コードです。
+        </p>
+      </div>
+    </section>
+
+    <!-- ========== マイナーコードセクション ========== -->
+    <section class="sound-section chord-section">
+      <div class="section-header">
+        <h2>🎹 マイナーコード <span id="minor-chord-name" class="chord-display">Cm</span></h2>
+        <button id="play-minor" class="play-btn">
+          <span class="play-icon">▶️</span>
+          再生
+        </button>
+      </div>
+      
+      <div class="chord-info">
+        <span class="chord-formula">構成音: <span id="minor-notes">C - E♭ - G</span></span>
+      </div>
+      
+      <div class="keyboard-container">
+        <div id="minor-keyboard" class="mini-keyboard"></div>
+      </div>
+      
+      <div class="nuance-box">
+        <h3>💭 コードのニュアンス</h3>
+        <p id="minor-nuance" class="nuance-text">
+          Cマイナーは切なく憂いを帯びた響き。
+          「悲しみ」「内省」「深い感情」を表現するのに使われます。
+          バラードや感動的なシーンでよく聴かれるコードです。
+        </p>
+      </div>
+    </section>
+
+    <!-- ========== セブンスコードセクション ========== -->
+    <section class="sound-section chord-section">
+      <div class="section-header">
+        <h2>🎹 セブンスコード <span id="seventh-chord-name" class="chord-display">C7</span></h2>
+        <button id="play-seventh" class="play-btn">
+          <span class="play-icon">▶️</span>
+          再生
+        </button>
+      </div>
+      
+      <div class="chord-info">
+        <span class="chord-formula">構成音: <span id="seventh-notes">C - E - G - B♭</span></span>
+      </div>
+      
+      <div class="keyboard-container">
+        <div id="seventh-keyboard" class="mini-keyboard"></div>
+      </div>
+      
+      <div class="nuance-box">
+        <h3>💭 コードのニュアンス</h3>
+        <p id="seventh-nuance" class="nuance-text">
+          C7はブルージーで緊張感のある響き。
+          「次への期待」「不安定さ」を持ち、解決を求める力があります。
+          ジャズやブルース、ファンクで多用されるコードです。
+        </p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Soundfontライブラリ -->
+  <script src="https://cdn.jsdelivr.net/npm/soundfont-player@latest/dist/soundfont-player.min.js"></script>
+  
+  <!-- メインスクリプト -->
+  <script type="module" src="js/learnMain.js"></script>
+</body>
+</html>

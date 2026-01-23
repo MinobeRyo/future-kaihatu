@@ -1,0 +1,315 @@
+/* ========================================
+   解説ページ - スタイル
+   ======================================== */
+
+/* ========== メインコンテナ ========== */
+.learn-container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+/* ========== 根音選択セクション ========== */
+.root-selector {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+}
+
+.root-selector h2 {
+  color: white;
+  margin: 0 0 16px 0;
+  font-size: 1.3rem;
+}
+
+.root-selector .root-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.root-selector .root-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.root-selector .root-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.root-selector .root-btn.active {
+  background: white;
+  color: #667eea;
+  border-color: white;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
+}
+
+/* ========== サウンドセクション共通 ========== */
+.sound-section {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.note-display,
+.chord-display {
+  background: linear-gradient(135deg, #4f8cff 0%, #3570d4 100%);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 1.2rem;
+}
+
+/* ========== 再生ボタン ========== */
+.play-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+}
+
+.play-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+}
+
+.play-btn:active {
+  transform: translateY(0);
+}
+
+.play-btn .play-icon {
+  font-size: 1.2rem;
+}
+
+/* ========== コード情報 ========== */
+.chord-info {
+  margin-bottom: 16px;
+}
+
+.chord-formula {
+  display: inline-block;
+  background: #f0f4fa;
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: #555;
+  font-size: 1rem;
+}
+
+.chord-formula span {
+  font-weight: bold;
+  color: #4f8cff;
+}
+
+/* ========== ミニ鍵盤 ========== */
+.keyboard-container {
+  background: #333;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+}
+
+.mini-keyboard {
+  position: relative;
+  height: 120px;
+  width: 268px; /* 白鍵7つ分: 38px * 7 = 266px + 少し余裕 */
+  margin: 0 auto;
+}
+
+.mini-key {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mini-key.white {
+  width: 36px;
+  height: 120px;
+  background: linear-gradient(to bottom, #fff 0%, #f5f5f5 100%);
+  border: 1px solid #ccc;
+  border-radius: 0 0 6px 6px;
+  z-index: 1;
+}
+
+.mini-key.black {
+  width: 24px;
+  height: 75px;
+  background: linear-gradient(to bottom, #444 0%, #222 100%);
+  border-radius: 0 0 4px 4px;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+}
+
+.mini-key.white.active {
+  background: linear-gradient(to bottom, #4f8cff 0%, #3570d4 100%) !important;
+  box-shadow: 0 0 15px rgba(79, 140, 255, 0.6);
+}
+
+.mini-key.black.active {
+  background: linear-gradient(to bottom, #ff8c4f 0%, #d47035 100%) !important;
+  box-shadow: 0 0 15px rgba(255, 140, 79, 0.6);
+}
+
+.mini-key .key-label {
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #666;
+  pointer-events: none;
+}
+
+.mini-key.black .key-label {
+  color: #aaa;
+  bottom: 5px;
+  font-size: 0.65rem;
+}
+
+.mini-key.active .key-label {
+  color: white;
+}
+
+/* ========== ニュアンスボックス ========== */
+.nuance-box {
+  background: linear-gradient(135deg, #f8f9ff 0%, #f0f4fa 100%);
+  border-radius: 12px;
+  padding: 20px;
+  border-left: 4px solid #4f8cff;
+}
+
+.nuance-box h3 {
+  margin: 0 0 12px 0;
+  color: #4f8cff;
+  font-size: 1.1rem;
+}
+
+.nuance-text {
+  margin: 0;
+  color: #555;
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+/* ========== 単音セクション専用 ========== */
+.single-note-section .nuance-box {
+  border-left-color: #27ae60;
+}
+
+.single-note-section .nuance-box h3 {
+  color: #27ae60;
+}
+
+.single-note-section .note-display {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+}
+
+/* ========== コードセクション色分け ========== */
+.chord-section:nth-of-type(2) .nuance-box {
+  border-left-color: #4f8cff;
+}
+
+.chord-section:nth-of-type(3) .nuance-box {
+  border-left-color: #9b59b6;
+}
+
+.chord-section:nth-of-type(3) .nuance-box h3 {
+  color: #9b59b6;
+}
+
+.chord-section:nth-of-type(3) .chord-display {
+  background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+}
+
+.chord-section:nth-of-type(4) .nuance-box {
+  border-left-color: #e67e22;
+}
+
+.chord-section:nth-of-type(4) .nuance-box h3 {
+  color: #e67e22;
+}
+
+.chord-section:nth-of-type(4) .chord-display {
+  background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+}
+
+/* ========== レスポンシブ ========== */
+@media (max-width: 600px) {
+  .learn-container {
+    padding: 12px;
+  }
+
+  .root-selector .root-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .play-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .mini-keyboard {
+    min-width: 300px;
+  }
+
+  .mini-key.white {
+    width: 28px;
+    height: 100px;
+  }
+
+  .mini-key.black {
+    width: 18px;
+    height: 60px;
+    margin-left: -9px;
+  }
+}
