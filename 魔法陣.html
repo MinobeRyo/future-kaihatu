@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>音楽の魔法陣</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .controls {
+      margin: 15px 0;
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 4px;
+      background-color: #3080FF;
+      color: white;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #2060DD;
+    }
+    .btn.active {
+      background-color: #FF8000;
+    }
+    .canvas-container {
+      position: relative;
+      margin: 20px 0;
+      border: 1px solid #333;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>音楽の魔法陣</h1>
+    
+    <div class="canvas-container">
+      <canvas id="magicCircle" width="600" height="600"></canvas>
+    </div>
+    
+    <div class="controls">
+      <button id="btnCircle" class="btn active">五度圏</button>
+      <button id="btnScale" class="btn">ダイアトニックスケール</button>
+      <button id="btnTriangle" class="btn">コード三角形</button>
+    </div>
+    
+    <div class="controls">
+      <button id="btnChord1" class="btn active">単音</button>
+      <button id="btnChord3" class="btn">三和音</button>
+      <button id="btnChord4" class="btn">四和音</button>
+      <button id="btnChord5" class="btn">五和音</button>
+    </div>
+    
+    <div class="controls">
+      <button id="btnPlay" class="btn">再生</button>
+    </div>
+  </div>
+  
+  <script type="module">
+    import MusicMagicCircle from './MusicMagicCircle.js';
+    
+    // DOMが完全に読み込まれた後に実行
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM loaded, initializing MusicMagicCircle');
+      
+      // 魔法陣の初期化
+      const magicCircle = new MusicMagicCircle('magicCircle');
+      
+      // 表示ボタンのイベントハンドラ
+      document.getElementById('btnCircle').addEventListener('click', (e) => {
+        const isActive = e.target.classList.toggle('active');
+        magicCircle.toggleCircleOfFifths(isActive);
+      });
+      
+      document.getElementById('btnScale').addEventListener('click', (e) => {
+        const isActive = e.target.classList.toggle('active');
+        magicCircle.toggleDiatonicScale(isActive);
+      });
+      
+      document.getElementById('btnTriangle').addEventListener('click', (e) => {
+        const isActive = e.target.classList.toggle('active');
+        magicCircle.toggleChordTriangle(isActive);
+      });
+      
+      // 和音ボタンのイベントハンドラ
+      document.getElementById('btnChord1').addEventListener('click', (e) => {
+        setActiveChordButton(e.target);
+        magicCircle.setChordType('none');
+      });
+      
+      document.getElementById('btnChord3').addEventListener('click', (e) => {
+        setActiveChordButton(e.target);
+        magicCircle.setChordType('major');
+      });
+      
+      document.getElementById('btnChord4').addEventListener('click', (e) => {
+        setActiveChordButton(e.target);
+        magicCircle.setChordType('maj7');
+      });
+      
+      document.getElementById('btnChord5').addEventListener('click', (e) => {
+        setActiveChordButton(e.target);
+        magicCircle.setChordType('dom7');
+      });
+      
+      // 再生ボタンのイベントハンドラ
+      document.getElementById('btnPlay').addEventListener('click', (e) => {
+        const isPlaying = magicCircle.togglePlay();
+        e.target.textContent = isPlaying ? '停止' : '再生';
+      });
+      
+      // 和音ボタンの選択状態を制御する関数
+      function setActiveChordButton(activeButton) {
+        const buttons = [
+          document.getElementById('btnChord1'),
+          document.getElementById('btnChord3'),
+          document.getElementById('btnChord4'),
+          document.getElementById('btnChord5')
+        ];
+        
+        buttons.forEach(btn => {
+          btn.classList.remove('active');
+        });
+        
+        activeButton.classList.add('active');
+      }
+    });
+  </script>
+</body>
+</html>
