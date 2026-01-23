@@ -254,6 +254,20 @@ function setupEventListeners() {
     });
   }
 
+  // ========== 保存/読込機能 ==========
+
+  // 保存ボタン
+  const saveBtn = document.getElementById('save-btn');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', saveProject);
+  }
+
+  // 読込ボタン
+  const loadBtn = document.getElementById('load-btn');
+  if (loadBtn) {
+    loadBtn.addEventListener('click', loadProject);
+  }
+
   console.log('✅ イベントリスナー設定完了');
 }
 
@@ -360,6 +374,87 @@ function deleteChord(chordId) {
   // 削除後に位置を再計算
   recalculatePositions();
   renderAllTimelines();
+}
+
+// ========== プロジェクト保存 ==========
+function saveProject() {
+  const projectData = {
+    version: '1.0',
+    savedAt: new Date().toISOString(),
+    bpm: composeState.bpm,
+    timeline: composeState.timeline
+  };
+
+  const jsonString = JSON.stringify(projectData, null, 2);
+  const blob = new Blob([jsonString], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  // ダウンロードリンクを作成
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `compose_${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  console.log('💾 プロジェクト保存完了');
+}
+
+// ========== プロジェクト読込 ==========
+function loadProject() {
+  // ファイル選択ダイアログを表示
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+
+  input.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const projectData = JSON.parse(event.target.result);
+
+        // データの検証
+        if (!projectData.timeline || !Array.isArray(projectData.timeline)) {
+          alert('⚠️ 無効なファイル形式です');
+          return;
+        }
+
+        // 確認ダイアログ
+        if (composeState.timeline.length > 0) {
+          if (!confirm('現在のデータを上書きしますか？')) {
+            return;
+          }
+        }
+
+        // データを復元
+        composeState.timeline = projectData.timeline;
+        if (projectData.bpm) {
+          composeState.bpm = projectData.bpm;
+          const bpmSlider = document.getElementById('bpm-slider');
+          const bpmValue = document.getElementById('bpm-value');
+          if (bpmSlider) bpmSlider.value = composeState.bpm;
+          if (bpmValue) bpmValue.textContent = composeState.bpm;
+        }
+
+        // 再描画
+        renderAllTimelines();
+
+        console.log('📂 プロジェクト読込完了:', projectData);
+        alert('✅ プロジェクトを読み込みました');
+      } catch (error) {
+        console.error('❌ 読込エラー:', error);
+        alert('⚠️ ファイルの読み込みに失敗しました');
+      }
+    };
+
+    reader.readAsText(file);
+  });
+
+  input.click();
 }
 
 // ========== 初期化実行 ==========
