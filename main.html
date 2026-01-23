@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ピアノコード学習アプリ</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/compose.css">
+</head>
+<body>
+  <nav class="main-navigation">
+    <a href="index.html" class="nav-link active">
+      <span class="icon">🎹</span>
+      練習モード
+    </a>
+    <a href="compose.html" class="nav-link">
+      <span class="icon">🎼</span>
+      作曲モード
+    </a>
+  </nav>
+
+  <div class="app-container">
+    <!-- コントロールパネル -->
+    <div class="control-panel">
+      
+      <!-- タブナビゲーション -->
+      <div class="tab-navigation">
+        <button class="tab-button active" data-tab="left-hand">左手設定</button>
+        <button class="tab-button" data-tab="right-hand">右手設定</button>
+      </div>
+
+      <!-- タブコンテンツ -->
+      <div class="tab-content">
+        
+        <!-- ========== 左手設定タブ ========== -->
+        <div id="left-hand-tab" class="tab-panel active">
+          
+          <!-- 基礎音選択 -->
+          <div class="control-section">
+            <h3>基礎音</h3>
+            <div class="button-row root-buttons">
+              <button class="root-btn" data-root="C">C</button>
+              <button class="root-btn" data-root="D">D</button>
+              <button class="root-btn" data-root="E">E</button>
+              <button class="root-btn" data-root="F">F</button>
+              <button class="root-btn" data-root="G">G</button>
+              <button class="root-btn" data-root="A">A</button>
+              <button class="root-btn" data-root="B">B</button>
+            </div>
+          </div>
+
+          <!-- 調号選択 -->
+          <div class="control-section">
+            <h3>調号</h3>
+            <div class="button-row">
+              <button class="accidental-btn" data-accidental="none">なし</button>
+              <button class="accidental-btn" data-accidental="sharp">♯</button>
+              <button class="accidental-btn" data-accidental="flat">♭</button>
+            </div>
+          </div>
+
+          <!-- コードタイプ選択 -->
+          <div class="control-section">
+            <h3>コードタイプ</h3>
+            <div class="button-row chord-types">
+              <button class="chord-type-btn" data-type="none">なし</button>
+              <button class="chord-type-btn" data-type="major">Major</button>
+              <button class="chord-type-btn" data-type="minor">Minor</button>
+              <button class="chord-type-btn" data-type="7">7th</button>
+              <button class="chord-type-btn" data-type="maj7">Maj7</button>
+              <button class="chord-type-btn" data-type="m7">m7</button>
+              <button class="chord-type-btn" data-type="sus4">sus4</button>
+              <button class="chord-type-btn" data-type="dim">dim</button>
+              <button class="chord-type-btn" data-type="aug">aug</button>
+            </div>
+          </div>
+
+          <!-- 左手ボイシング -->
+          <div class="control-section">
+            <h3>左手ボイシング</h3>
+            <div class="button-row voicing-buttons">
+              <button class="voicing-btn" data-voicing="root">基本形</button>
+              <button class="voicing-btn" data-voicing="first">第1転回</button>
+              <button class="voicing-btn" data-voicing="second">第2転回</button>
+              <button class="voicing-btn" data-voicing="spread">開離</button>
+            </div>
+          </div>
+
+          <!-- 左手オクターブ -->
+          <div class="control-section">
+            <h3>左手オクターブ</h3>
+            <div class="octave-control">
+              <button id="left-octave-down" class="octave-button">-</button>
+              <span id="left-current-octave" class="octave-value">4</span>
+              <button id="left-octave-up" class="octave-button">+</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ========== 右手設定タブ ========== -->
+        <div id="right-hand-tab" class="tab-panel">
+          
+          <!-- 【追加】現在のパターン表示 -->
+          <div class="pattern-display">
+            <span>選択中のパターン:</span>
+            <span id="right-pattern-name">なし</span>
+          </div>
+
+          <!-- 右手パターン選択 -->
+          <div class="control-section">
+            <h3>右手パターン</h3>
+            <div class="button-row right-pattern-buttons">
+              <button class="right-pattern-btn" data-pattern="none">なし</button>
+              <button class="right-pattern-btn" data-pattern="root">ルート音</button>
+              <button class="right-pattern-btn" data-pattern="chord-tones">コードトーン</button>
+              <button class="right-pattern-btn" data-pattern="arpeggio">アルペジオ</button>
+              <button class="right-pattern-btn" data-pattern="octave-double">オクターブ重ね</button>
+              <button class="right-pattern-btn" data-pattern="fifth">5度</button>
+            </div>
+          </div>
+
+          <!-- 【修正】右手オクターブシフト -->
+          <div class="control-section">
+            <h3>右手オクターブシフト</h3>
+            <div class="octave-control">
+              <button id="right-octave-down" class="octave-button">-</button>
+              <span id="right-octave-shift" class="octave-value">+1</span>
+              <button id="right-octave-up" class="octave-button">+</button>
+            </div>
+            <p class="help-text">左手からの相対オクターブ (0〜+3)</p>
+          </div>
+
+          <!-- 右手ボイシング -->
+          <div class="control-section">
+            <h3>右手ボイシング</h3>
+            <div class="button-row right-voicing-buttons">
+              <button class="right-voicing-btn" data-voicing="close">密集</button>
+              <button class="right-voicing-btn" data-voicing="open">開離</button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ========== 共通設定（タブの外） ========== -->
+      <div class="common-controls">
+        
+        <!-- 音色選択 -->
+        <div class="control-section">
+          <h3>音色</h3>
+          <select id="instrument-select">
+            <option value="acoustic_grand_piano">グランドピアノ</option>
+            <option value="bright_acoustic_piano">ブライトピアノ</option>
+            <option value="electric_piano_1">エレクトリックピアノ1</option>
+            <option value="electric_piano_2">エレクトリックピアノ2</option>
+            <option value="electric_grand_piano">エレクトリックグランド</option>
+          </select>
+        </div>
+
+        <!-- 演奏モード -->
+        <div class="control-section">
+          <h3>演奏モード</h3>
+          <div class="button-row play-mode-buttons">
+            <button class="play-mode-btn" data-mode="both">両手</button>
+            <button class="play-mode-btn" data-mode="left-only">左手のみ</button>
+            <button class="play-mode-btn" data-mode="right-only">右手のみ</button>
+          </div>
+        </div>
+
+        <!-- 現在のコード表示 -->
+        <div class="current-chord-display">
+          <h2 id="chord-name">C</h2>
+          <p id="chord-notes">構成音: C4</p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- 88鍵盤ピアノ -->
+    <div class="piano-container">
+      <div id="piano-keyboard" class="piano-keyboard"></div>
+    </div>
+  </div>
+
+  <!-- Soundfontライブラリ -->
+  <script src="https://cdn.jsdelivr.net/npm/soundfont-player@latest/dist/soundfont-player.min.js"></script>
+  
+  <!-- メインJSをモジュールとして読み込み -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
