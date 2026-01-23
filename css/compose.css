@@ -1,0 +1,646 @@
+/* ========================================
+   ナビゲーション
+   ======================================== */
+.main-navigation {
+  display: flex;
+  gap: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nav-link {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 24px;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.nav-link.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border-bottom-color: white;
+}
+
+.nav-link .icon {
+  font-size: 20px;
+}
+
+/* ========================================
+   ベーススタイル
+   ======================================== */
+body {
+  font-family: 'Noto Sans JP', Arial, sans-serif;
+  background: linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* ========================================
+   メインコンテナ
+   ======================================== */
+.compose-container {
+  display: flex;
+  gap: 20px;
+  max-width: 1400px;
+  margin: 20px auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  min-height: calc(100vh - 100px);
+}
+
+/* ========================================
+   左側パレット
+   ======================================== */
+.chord-palette {
+  width: 320px;
+  background: #f0f4fa;
+  border-radius: 12px;
+  padding: 24px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.chord-palette h2 {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  color: #2c3e50;
+  border-bottom: 3px solid #4f8cff;
+  padding-bottom: 10px;
+}
+
+/* ========================================
+   パレットセクション
+   ======================================== */
+.palette-section {
+  margin-bottom: 24px;
+}
+
+.palette-section h3 {
+  font-size: 13px;
+  color: #7f8c8d;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ========================================
+   共通ボタンスタイル
+   ======================================== */
+.root-btn,
+.accidental-btn,
+.chord-type-btn,
+.length-btn,
+.octave-btn {
+  padding: 10px 14px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background: #e3eafc;
+  color: #333;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.root-btn:hover,
+.accidental-btn:hover,
+.chord-type-btn:hover,
+.length-btn:hover,
+.octave-btn:hover {
+  background: #d0ddff;
+  transform: translateY(-2px);
+}
+
+.root-btn.active,
+.accidental-btn.active,
+.chord-type-btn.active,
+.length-btn.active,
+.octave-btn.active {
+  background: #4f8cff;
+  color: #fff;
+  border-color: #3570d4;
+}
+
+/* 長さボタン専用レイアウト */
+.length-buttons {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+/* オクターブボタン専用 */
+.octave-btn {
+  min-width: 40px;
+  padding: 10px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+/* ========================================
+   選択プレビューエリア
+   ======================================== */
+.selected-preview {
+  background: linear-gradient(135deg, #e3eafc 0%, #d0ddff 100%);
+  border-radius: 10px;
+  padding: 16px;
+  margin: 20px 0;
+  text-align: center;
+  border: 2px solid #4f8cff;
+  display: none;
+}
+
+.selected-preview.has-selection {
+  display: block;
+}
+
+.preview-title {
+  font-size: 12px;
+  color: #7f8c8d;
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+}
+
+.preview-chord {
+  font-size: 32px;
+  font-weight: bold;
+  color: #4f8cff;
+  margin-bottom: 8px;
+}
+
+.preview-length {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+/* プレビュー再生ボタン */
+.preview-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.preview-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.preview-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
+}
+
+.preview-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* ========================================
+   休符セクション
+   ======================================== */
+.rest-section {
+  border: 2px dashed #95a5a6;
+  border-radius: 10px;
+  padding: 16px;
+  background: #f9f9f9;
+}
+
+.rest-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.rest-btn:hover {
+  background: linear-gradient(135deg, #7f8c8d 0%, #5a6268 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.rest-icon {
+  font-size: 28px;
+}
+
+.rest-label {
+  font-size: 14px;
+}
+
+/* ヘルプテキスト */
+.help-text {
+  font-size: 11px;
+  color: #95a5a6;
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* ========================================
+   右側タイムラインエリア
+   ======================================== */
+.timeline-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+/* ========================================
+   コントロールバー
+   ======================================== */
+.playback-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f0f4fa;
+}
+
+.control-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.control-btn {
+  padding: 10px 18px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background: #e3eafc;
+  color: #333;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.control-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.control-btn.play {
+  background: #4f8cff;
+  color: #fff;
+  border-color: #3570d4;
+}
+
+.control-btn.stop {
+  background: #ff4f4f;
+  color: #fff;
+  border-color: #d43535;
+}
+
+.control-btn.loop {
+  background: #ffd84f;
+  color: #333;
+  border-color: #d4b435;
+}
+
+.control-btn.loop.active {
+  background: #ffb84f;
+  border-color: #d49435;
+}
+
+.control-btn.danger {
+  background: #ff4f4f;
+  color: #fff;
+  border-color: #d43535;
+}
+
+/* ========================================
+   テンポコントロール
+   ======================================== */
+.tempo-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+#bpm-value {
+  display: inline-block;
+  min-width: 40px;
+  text-align: center;
+  color: #4f8cff;
+  font-weight: bold;
+}
+
+#bpm-slider {
+  width: 150px;
+  cursor: pointer;
+}
+
+/* ========================================
+   カウント表示
+   ======================================== */
+.count-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.count-label {
+  font-weight: 600;
+  color: #7f8c8d;
+}
+
+.count-value {
+  font-size: 22px;
+  font-weight: bold;
+  color: #4f8cff;
+}
+
+.count-max {
+  color: #95a5a6;
+  font-size: 16px;
+}
+
+/* ========================================
+   タイムラインラッパー
+   ======================================== */
+.timeline-wrapper {
+  background: #f0f4fa;
+  border-radius: 12px;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+/* ========================================
+   トラックセクション
+   ======================================== */
+.track-section {
+  margin-bottom: 30px;
+  border: 2px solid #d0ddff;
+  border-radius: 12px;
+  padding: 15px;
+  background: #ffffff;
+}
+
+.track-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.track-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #2c3e50;
+}
+
+.track-mode-btn {
+  padding: 8px 16px;
+  background: #e3eafc;
+  color: #7f8c8d;
+  border: 2px solid #d0ddff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.track-mode-btn:hover {
+  background: #d0ddff;
+  border-color: #4f8cff;
+}
+
+.track-mode-btn.active {
+  background: #4f8cff;
+  color: white;
+  border-color: #4f8cff;
+  font-weight: bold;
+}
+
+/* タイムライングリッド */
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(32, minmax(24px, 1fr));
+  gap: 2px;
+  background: #ddd;
+  padding: 2px;
+  border-radius: 8px;
+  min-height: 80px;
+  position: relative;
+  min-width: 800px;
+}
+
+.timeline-slot {
+  background: #fff;
+  border: 1px solid #e0e0e0; /* ← グリッド線を追加 */
+  border-radius: 4px;
+  min-height: 76px;
+  position: relative;
+  transition: background 0.2s ease;
+}
+
+.timeline-slot:hover:not(.filled) {
+  background: #f8f9fa;
+  border-color: #4f8cff; /* ホバー時に青く */
+}
+
+.timeline-slot.filled {
+  background: transparent;
+  border-color: transparent;
+}
+
+/* ========================================
+   コード・音符ブロック
+   ======================================== */
+.chord-block {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(135deg, #4f8cff 0%, #3570d4 100%);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.chord-block:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.chord-name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.chord-length {
+  font-size: 11px;
+  opacity: 0.9;
+  margin-top: 4px;
+}
+
+/* 休符ブロック専用スタイル */
+.chord-block.rest {
+  background: repeating-linear-gradient(
+    45deg,
+    #ecf0f1,
+    #ecf0f1 10px,
+    #bdc3c7 10px,
+    #bdc3c7 20px
+  );
+  color: #7f8c8d;
+  border: 2px dashed #95a5a6;
+}
+
+.chord-block.rest .chord-name {
+  font-size: 20px;
+}
+
+/* 削除ボタン */
+.delete-chord {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(255, 79, 79, 0.9);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.chord-block:hover .delete-chord {
+  opacity: 1;
+}
+
+.delete-chord:hover {
+  background: #ff4f4f;
+}
+
+/* 空メッセージ */
+.empty-message {
+  text-align: center;
+  color: #95a5a6;
+  font-size: 15px;
+  margin-top: 30px;
+  padding: 20px;
+}
+
+/* ========================================
+   モード切替時の表示制御
+   ======================================== */
+
+/* デフォルトでオクターブセレクターを非表示 */
+.octave-selector {
+  display: none;
+}
+
+/* コードモード時 */
+body.chord-mode .chord-type-selector {
+  display: block;
+}
+
+body.chord-mode .octave-selector {
+  display: none;
+}
+
+/* メロディモード時 */
+body.melody-mode .chord-type-selector {
+  display: none;
+}
+
+body.melody-mode .octave-selector {
+  display: block;
+}
+
+body.melody-mode .preview-title::before {
+  content: '🎵 ';
+}
+
+/* ベースモード時 */
+body.bass-mode .chord-type-selector {
+  display: none;
+}
+
+body.bass-mode .octave-selector {
+  display: block;
+}
+
+body.bass-mode .preview-title::before {
+  content: '🎸 ';
+}
+
+/* ========================================
+   レスポンシブ対応
+   ======================================== */
+@media (max-width: 1200px) {
+  .compose-container {
+    flex-direction: column;
+  }
+
+  .chord-palette {
+    width: 100%;
+  }
+}

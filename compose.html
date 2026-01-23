@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作曲モード - ピアノコード学習アプリ</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/compose.css">
+</head>
+<body>
+  
+  <!-- ページナビゲーション -->
+  <nav class="main-navigation">
+    <a href="index.html" class="nav-link">
+      <span class="icon">🎹</span>
+      練習モード
+    </a>
+    <a href="compose.html" class="nav-link active">
+      <span class="icon">🎼</span>
+      作曲モード
+    </a>
+  </nav>
+
+  <div class="compose-container">
+    
+    <!-- ========== 左側: コード選択パネル ========== -->
+    <aside class="chord-palette">
+      <h2>コード選択</h2>
+      
+      <!-- 基礎音選択 -->
+      <div class="palette-section">
+        <h3>基礎音</h3>
+        <div class="button-row root-buttons">
+          <button class="root-btn" data-root="C">C</button>
+          <button class="root-btn" data-root="D">D</button>
+          <button class="root-btn" data-root="E">E</button>
+          <button class="root-btn" data-root="F">F</button>
+          <button class="root-btn" data-root="G">G</button>
+          <button class="root-btn" data-root="A">A</button>
+          <button class="root-btn" data-root="B">B</button>
+        </div>
+      </div>
+
+        <div class="palette-section rest-section">
+        <h3>🎵 休符</h3>
+        <button class="rest-btn" id="rest-btn">
+            <span class="rest-icon">𝄽</span>
+            <span class="rest-label">休符を追加</span>
+        </button>
+        <p class="help-text">無音区間を追加します</p>
+        </div>      
+      <!-- 調号選択 -->
+      <div class="palette-section">
+        <h3>調号</h3>
+        <div class="button-row">
+          <button class="accidental-btn active" data-accidental="none">なし</button>
+          <button class="accidental-btn" data-accidental="sharp">♯</button>
+          <button class="accidental-btn" data-accidental="flat">♭</button>
+        </div>
+      </div>
+
+      <!-- コードタイプ選択 -->
+      <div class="chord-type-selector palette-section">
+        <h3>コードタイプ</h3>
+        <div class="button-row chord-types">
+          <button class="chord-type-btn" data-type="major">Major</button>
+          <button class="chord-type-btn" data-type="minor">Minor</button>
+          <button class="chord-type-btn" data-type="7">7th</button>
+          <button class="chord-type-btn" data-type="maj7">Maj7</button>
+          <button class="chord-type-btn" data-type="m7">m7</button>
+          <button class="chord-type-btn" data-type="sus4">sus4</button>
+          <button class="chord-type-btn" data-type="dim">dim</button>
+          <button class="chord-type-btn" data-type="aug">aug</button>
+        </div>
+      </div>
+
+        <!-- オクターブ選択（メロディ・ベース用） -->
+        <div class="octave-selector palette-section">
+        <h3>オクターブ (88鍵盤対応)</h3>
+        <div class="button-row">
+            <button class="octave-btn" data-octave="1">1</button>
+            <button class="octave-btn" data-octave="2">2</button>
+            <button class="octave-btn" data-octave="3">3</button>
+            <button class="octave-btn active" data-octave="4">4</button>
+            <button class="octave-btn" data-octave="5">5</button>
+            <button class="octave-btn" data-octave="6">6</button>
+            <button class="octave-btn" data-octave="7">7</button>
+            <button class="octave-btn" data-octave="8">8</button>
+        </div>
+        <p class="help-text">🎹 1=最低音域 / 4=中央 / 8=最高音域</p>
+        </div>
+
+      <!-- 長さ選択 -->
+      <div class="palette-section">
+        <h3>長さ（カウント）</h3>
+        <div class="button-row length-buttons">
+          <button class="length-btn active" data-length="1">1</button>
+          <button class="length-btn" data-length="2">2</button>
+          <button class="length-btn" data-length="4">4</button>
+          <button class="length-btn" data-length="8">8</button>
+          <button class="length-btn" data-length="16">16</button>
+        </div>
+      </div>
+
+      <!-- 現在の選択プレビュー -->
+      <div class="selected-preview">
+        <h4 class="preview-title">選択中</h4>
+        <div class="preview-chord" id="preview-chord">C</div>
+        <div class="preview-length" id="preview-length">長さ: 1カウント</div>
+        <!-- 👇 ここに追加 -->
+        <button id="preview-btn" class="preview-btn">
+            🎵 音を確認
+        </button>
+
+      </div>
+
+      <!-- 追加ボタン -->
+      <button id="add-chord-btn" class="add-button">
+        ➕ タイムラインに追加
+      </button>
+
+    </aside>
+
+    <!-- ========== 右側: タイムラインエリア ========== -->
+    <main class="timeline-area">
+      
+      <!-- コントロールバー -->
+      <div class="playback-controls">
+        <div class="control-group">
+          <button id="play-btn" class="control-btn play">▶️ 再生</button>
+          <button id="stop-btn" class="control-btn stop">⏹️ 停止</button>
+          <button id="loop-btn" class="control-btn loop">🔁 ループ</button>
+        </div>
+
+        <div class="control-group">
+          <label class="tempo-label">
+            BPM: <span id="bpm-value">120</span>
+          </label>
+          <input type="range" id="bpm-slider" min="40" max="240" value="120" step="1">
+        </div>
+
+        <div class="control-group">
+          <button id="clear-btn" class="control-btn danger">🗑️ 全削除</button>
+          <button id="save-btn" class="control-btn">💾 保存</button>
+          <button id="load-btn" class="control-btn">📂 読込</button>
+        </div>
+      </div>
+
+      <!-- カウント表示 -->
+      <div class="count-display">
+        <span class="count-label">合計:</span>
+        <span id="total-count" class="count-value">0</span>
+        <span class="count-max">/ 32</span>
+      </div>
+
+      <!-- タイムライングリッド（3トラック） -->
+      <div class="timeline-wrapper">
+        
+        <!-- メロディトラック -->
+        <div class="track-section">
+          <div class="track-header">
+            <h3>🎵 メロディ</h3>
+            <button class="track-mode-btn" data-track="melody">
+              編集モード切替
+            </button>
+          </div>
+          <div id="empty-message-melody" class="empty-message">
+            メロディを配置してください
+          </div>
+          <div id="timeline-melody" class="timeline"></div>
+        </div>
+
+        <!-- コード進行トラック -->
+        <div class="track-section">
+          <div class="track-header">
+            <h3>🎹 コード進行</h3>
+            <button class="track-mode-btn active" data-track="chord">
+              編集モード切替
+            </button>
+          </div>
+          <div id="empty-message-chord" class="empty-message">
+            コード進行を配置してください
+          </div>
+          <div id="timeline-chord" class="timeline"></div>
+        </div>
+
+        <!-- ベーストラック -->
+        <div class="track-section">
+          <div class="track-header">
+            <h3>🎸 ベース</h3>
+            <button class="track-mode-btn" data-track="bass">
+              編集モード切替
+            </button>
+          </div>
+          <div id="empty-message-bass" class="empty-message">
+            ベースラインを配置してください
+          </div>
+          <div id="timeline-bass" class="timeline"></div>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- Soundfontライブラリ -->
+  <script src="https://cdn.jsdelivr.net/npm/soundfont-player@latest/dist/soundfont-player.min.js"></script>
+  
+  <!-- メインスクリプト -->
+    <script type="module" src="js/composeMain.js"></script>
+</body>
+</html>
