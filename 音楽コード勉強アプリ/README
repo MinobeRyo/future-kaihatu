@@ -298,3 +298,25 @@
 - `css/compose.css` は `compose.html` 専用ではなく、複数ページで共有される共通スタイルです。
 - `js/main.js` と `js/composeMain.js` のどちらも「HTML から読み込まれるエントリーポイント」であり、その内部でさらに複数のモジュールを読み込む構造です。
 - `learn.html` と `魔法陣.html` は、それぞれ独立動作するページとして設計されています。
+
+main.html
+└── main.js（初期化・統合）
+    ├── audioManager.js   # Web Audio API / 楽器ロード / 音符再生
+    ├── keyboard.js       # 88鍵盤DOM生成・クリックイベント
+    ├── eventHandlers.js  # UIイベント検知・状態更新・演奏実行
+    ├── uiController.js   # 表示更新・ステータス管理
+    ├── state.js          # アプリ全体の状態（Single Source of Truth）
+    ├── chordCalculator.js# コード構成音の計算・MIDI変換
+    └── config.js         # 定数・音名・コード間隔定義
+
+compose.html
+└── composeMain.js
+    ├── composeAudio.js   # タイムライン再生・ループ・停止制御
+    ├── composeState.js   # タイムライン・トラック状態管理
+    └── composeUI.js      # タイムライン描画・選択状態更新
+
+learn.html
+└── learnMain.js          # ページ完結型の独立実装
+
+魔法陣.html
+└── MusicMagicCircle.js   # Canvas描画・独立モジュール
